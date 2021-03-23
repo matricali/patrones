@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#7952b3">
+
+        <style>
+          li {
+              color: black;
+          }
+        </style>
+
+        <link href="bootstrap.min.css" rel="stylesheet">
+
+        <script src="p5.min.js"></script>
+        <script src="utils.js"></script>
+        <script src="classes.js"></script>
+        <script src="main.js"></script>
+    </head>
+    <body class="d-flex h-100 text-center text-white bg-dark">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <div class="px-3">
+            
+                <h1>Patrones de diseño</h1>
+                <main></main>
+                <button class="btn btn-primary" onclick="javascript:loop()">Play</button>
+                <button class="btn btn-primary" onclick="javascript:noLoop()">Pause</button>
+                <button class="btn btn-primary" onclick="javascript:frameRate(15)">15 frames</button>
+                <button class="btn btn-primary" onclick="javascript:frameRate(60)">60 frames</button>
+                <hr />
+                <h3>Funciones útiles</h3>
+                <ul class="list-group">
+                    <li class="list-group-item">V(x, y) devuelve un vector. V(10,5) => {x: 10, y: 5}</li>
+                    <li class="list-group-item">vectorDireccion(vector1, vector2) devuelve un vector con la dirección desde vector1 al vector2</li>
+                    <li class="list-group-item">distancia(vector1, vector2) devuelve la distancia entre una coordenada a la otra</li>
+                    <li class="list-group-item">longitud(vector) es la longitud del vector al origen</li>
+                </ul>
+                <hr />
+                <h3>Referencias javascript</h3>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="https://p5js.org/reference/">P5</a></li>
+                    <li class="list-group-item"><a href="https://www.youtube.com/playlist?list=PLRqwX-V7Uu6Zy51Q-x9tMWIv9cueOFTFA">The coding train - P5 - Basic course</a></li>
+                    <li class="list-group-item"><a href="https://javascript.info/">Documentación Javascript</a></li>
+                    <li class="list-group-item"><a href="https://javascript.info/classes">Clases en Javascript</a></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
