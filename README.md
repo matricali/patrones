@@ -5,8 +5,8 @@ npm install
 
 Renombrar los archivos:
 
-public/classes.example.js => public/classes.js
-public/main.example.js    => public/main.js
+- public/classes.example.js => public/classes.js
+- public/main.example.js    => public/main.js
 
 Correr
 ======
