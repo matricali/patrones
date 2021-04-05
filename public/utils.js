@@ -6,7 +6,7 @@
  * @returns Vector
  */
 function V(x, y) {
-    return {x, y}
+    return createVector(x, y)
 }
 
 /**
@@ -53,12 +53,12 @@ function longitud(vector) {
 }
 
 /**
- * Filtra la lista sacando los elemento para los cuales la
+ * Filtra la lista dejando los elemento para los cuales la
  * funcion fn da verdadero. Te modifica la lista original a
  * diferencia de [].filter
  * 
- * Ejemplo para quedarse con los:
- *     > filtrarLista([1,2,3,4], n => n%2)
+ * Ejemplo para quedarse con los pares:
+ *     > filtrarLista([1,2,3,4], n => n%2 == 0)
  * 
  * @param Array lista 
  * @param function fn 
@@ -113,4 +113,31 @@ function actualizarVelocidadesRelativasEnColisión(cuerpo1, cuerpo2) {
 
     cuerpo2.vx = cuerpo2.vx + velocidad.vx
     cuerpo2.vy = cuerpo2.vy + velocidad.vy
+}
+
+
+var Mensajes = {
+    x: 250,
+    y: 20,
+    mensajes: [],
+    agregar: function(mensaje, tiempo) {
+        let t = tiempo || 160
+        this.mensajes.push({texto: mensaje, tiempo: t})
+    },
+    mostrar: function() {
+        filtrarLista(this.mensajes, m => m.tiempo > 0)
+        if (!this.mensajes.length)
+            return;
+
+        push()
+        textSize(8)
+        fill(150, 0, 0)
+        let y = this.y
+        for(let i in this.mensajes) {
+            this.mensajes[i].tiempo -= 1
+            text(this.mensajes[i].texto, this.x, y)
+            y += 10
+        }
+        pop()
+    }
 }
