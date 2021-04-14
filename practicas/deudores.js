@@ -51,23 +51,88 @@
  * Para pensar:
  * ¿Y si queremos detectar cuando se hace un retiro de plata que no se puede lograr por falta de fondos?
  */
+class Auditor {
+  constructor(nombre) {
+    this.nombre = nombre;
+  }
+  ingresaDinero(caja, monto) {
+    throw new Error("No implementado");
+  }
+  egresaDinero(caja, monto) {
+    throw new Error("No implementado");
+  }
+}
+
+class IngresoAuditor extends Auditor {
+  ingresaDinero(caja, monto) {
+    console.log(this.nombre + ": " + caja.nombre + " depositó " + monto);
+  }
+  egresaDinero(caja, monto) {
+    // No hago nada
+  }
+}
+
+class AfipAuditor extends IngresoAuditor {
+  constructor() {
+    super("AFIP");
+  }
+}
+
+class JefeMafiaAuditor extends IngresoAuditor {
+  constructor() {
+    super("Jefe Mafia");
+  }
+}
+
+class TarjetaAuditor extends IngresoAuditor {
+  constructor() {
+    super("Tarjeta de credito");
+  }
+}
+
+class AgenciaAntiCorrupcionAuditor extends Auditor {
+  constructor() {
+    super("Agencia anti corrupcion");
+  }
+  ingresaDinero(caja, monto) {
+      if (monto < 50000) {
+          console.log(this.nombre + ": " + caja.nombre + " depositó " + monto + " y es menos de 50 mil");
+          return;
+      }
+      console.log(this.nombre + ": " + caja.nombre + " depositó " + monto + ", es sospechoso!!!!");
+  }
+  egresaDinero(caja, monto) {
+    // No hago nada
+  }
+}
 
 class CajaDeAhorro {
   constructor(nombre, plataInicial) {
     this.nombre = nombre;
     this.total = plataInicial;
+    this.auditores = [];
   }
 
   ponerPlata(plata) {
     this.total += plata;
+    for (let i = 0; i < this.auditores.length; i++) {
+      this.auditores[i].ingresaDinero(this, plata);
+    }
   }
 
   sacarPlata(plata) {
     if (this.total >= plata) {
       this.total -= plata;
+      for (let i = 0; i < this.auditores.length; i++) {
+        this.auditores[i].egresaDinero(this, plata);
+      }
       return plata;
     }
     return 0;
+  }
+
+  auditar(auditor) {
+    this.auditores.push(auditor);
   }
 }
 
@@ -77,6 +142,20 @@ const clientes = {
   natalia: new CajaDeAhorro("Natalia Buenaventura", 250),
 };
 
+const afip = new AfipAuditor();
+const aac = new AgenciaAntiCorrupcionAuditor();
+const jm = new JefeMafiaAuditor();
+const tarjeta = new TarjetaAuditor();
+
+// Agrego AFIP y agencia anti corrupcion a todos las cajas
+Object.keys(clientes).forEach(function (key, index) {
+  clientes[key].auditar(afip);
+  clientes[key].auditar(aac);
+});
+clientes.juanito.auditar(jm);
+clientes.natalia.auditar(tarjeta);
+
+// Movimientos de la caja de ahorro
 clientes.pepe.ponerPlata(100);
 clientes.pepe.ponerPlata(40);
 clientes.pepe.sacarPlata(200); // puede sacar
