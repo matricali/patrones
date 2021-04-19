@@ -56,16 +56,16 @@ class Auditor {
     this.nombre = nombre;
   }
   ingresaDinero(caja, monto) {
-    throw new Error("No implementado");
+    throw new Error('No implementado');
   }
   egresaDinero(caja, monto) {
-    throw new Error("No implementado");
+    throw new Error('No implementado');
   }
 }
 
 class IngresoAuditor extends Auditor {
   ingresaDinero(caja, monto) {
-    console.log(this.nombre + ": " + caja.nombre + " depositó " + monto);
+    console.log(`${this.nombre}: ${caja.nombre} depositó ${monto}`);
   }
   egresaDinero(caja, monto) {
     // No hago nada
@@ -96,10 +96,10 @@ class AgenciaAntiCorrupcionAuditor extends Auditor {
   }
   ingresaDinero(caja, monto) {
       if (monto < 50000) {
-          console.log(this.nombre + ": " + caja.nombre + " depositó " + monto + " y es menos de 50 mil");
+          console.log(`${this.nombre}: ${caja.nombre} depositó ${monto} y es menos de 50 mil`);
           return;
       }
-      console.log(this.nombre + ": " + caja.nombre + " depositó " + monto + ", es sospechoso!!!!");
+      console.log(`${this.nombre}: ${caja.nombre} depositó ${monto}, es sospechoso!!!!`);
   }
   egresaDinero(caja, monto) {
     // No hago nada
