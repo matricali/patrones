@@ -3,7 +3,7 @@ const VIEWPORT_MAX_X = 400;
 const VIEWPORT_MIN_Y = 0;
 const VIEWPORT_MAX_Y = 400;
 
-class Objeto {
+class Entidad {
   constructor(id, posicion, velocidad, color) {
     this._id = id;
     this.posicion = posicion;
@@ -55,33 +55,9 @@ class Objeto {
     this.rebotar();
     this.dibujar();
   }
-
-  colisionCirculoCuadrado(circulo, cuadrado) {
-    let testX = circulo.posicion.x;
-    let testY = circulo.posicion.y;
-
-    // Buscar borde mas cercano
-    if (circulo.posicion.x < cuadrado.posicion.x) {
-      testX = cuadrado.posicion.x; // borde izquierdo
-    } else if (circulo.posicion.x > cuadrado.posicion.x + cuadrado.lado) {
-      testX = cuadrado.posicion.x + cuadrado.lado; // borde derecho
-    }
-    if (circulo.posicion.y < cuadrado.posicion.y) {
-      testY = cuadrado.posicion.y; // borde superior
-    } else if (circulo.posicion.y > cuadrado.posicion.y + cuadrado.lado) {
-      testY = cuadrado.posicion.y + cuadrado.lado; // borde inferior
-    }
-
-    // distancia al borde mas cercano
-    let distX = circulo.posicion.x - testX;
-    let distY = circulo.posicion.y - testY;
-    let distancia = sqrt(distX * distX + distY * distY);
-
-    return distancia <= circulo.radio;
-  }
 }
 
-class Circulo extends Objeto {
+class Circulo extends Entidad {
   constructor(id, posicion, velocidad, color, diametro) {
     super(id, posicion, velocidad, color);
     this.diametro = diametro;
@@ -100,12 +76,32 @@ class Circulo extends Objeto {
   colisionCirculo(otro) {
     return distancia(otro.posicion, this.posicion) <= otro.radio + this.radio;
   }
-  colisionCuadrado(otro) {
-    return this.colisionCirculoCuadrado(this, otro);
+  colisionCuadrado(cuadrado) {
+    let testX = this.posicion.x;
+    let testY = this.posicion.y;
+
+    // Buscar borde mas cercano
+    if (this.posicion.x < cuadrado.posicion.x) {
+      testX = cuadrado.posicion.x; // borde izquierdo
+    } else if (this.posicion.x > cuadrado.posicion.x + cuadrado.lado) {
+      testX = cuadrado.posicion.x + cuadrado.lado; // borde derecho
+    }
+    if (this.posicion.y < cuadrado.posicion.y) {
+      testY = cuadrado.posicion.y; // borde superior
+    } else if (this.posicion.y > cuadrado.posicion.y + cuadrado.lado) {
+      testY = cuadrado.posicion.y + cuadrado.lado; // borde inferior
+    }
+
+    // distancia al borde mas cercano
+    let distX = this.posicion.x - testX;
+    let distY = this.posicion.y - testY;
+    let distancia = sqrt(distX * distX + distY * distY);
+
+    return distancia <= this.radio;
   }
 }
 
-class Cuadrado extends Objeto {
+class Cuadrado extends Entidad {
   constructor(id, posicion, velocidad, color, lado) {
     super(id, posicion, velocidad, color);
     this.lado = lado;
@@ -121,7 +117,7 @@ class Cuadrado extends Objeto {
     return otro.colisionCuadrado(this);
   }
   colisionCirculo(otro) {
-    return this.colisionCirculoCuadrado(otro, this);
+    return otro.colisionCuadrado(this);
   }
   colisionCuadrado(otro) {
     return (
@@ -140,7 +136,7 @@ function draw() {
   // volvemos a pintar todo lo que queramos
   background(0);
 
-  // Detectar collisiones con otros objetos
+  // Detectar collisiones con otras entidades
   for (let i = 0; i < entidades.length; i++) {
     for (let n = i + 1; n < entidades.length; n++) {
       if (entidades[i].colisionOtro(entidades[n])) {
